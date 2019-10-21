@@ -73,17 +73,18 @@ def read_file_to_string(directory, filename):
 
 
 def page_to_ads(page_content):
-    """Funkcija poišče posamezne ogllase, ki se nahajajo v spletni strani in
+    """Funkcija poišče posamezne oglase, ki se nahajajo v spletni strani in
     vrne njih seznam"""
     rx = re.compile(r'<div class="ad">(.*?)<div class="clear">',
                     re.DOTALL)
-    ads = re.findall(rx, page_content)
+    ads = re.findall(rx, page_content) #findall naredi seznam, finditer deluje na objektu
     return ads
 
 
 # Definirajte funkcijo, ki sprejme niz, ki predstavlja oglas, in izlušči
 # podatke o imenu, ceni in opisu v oglasu.
 
+#DEBUGGEX
 
 def get_dict_from_ad_block(block):
     """Funkcija iz niza za posamezen oglasni blok izlušči podatke o imenu, ceni
