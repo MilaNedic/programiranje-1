@@ -1,15 +1,4 @@
 {
-<<<<<<< HEAD
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "python",
-            "type": "shell",
-            "command": "python -i \\\"${file}\\\"",
-            "problemMatcher": []
-=======
     "version": "2.0.0",
     "tasks": [
         {
@@ -21,7 +10,7 @@
             },
             "windows": {
                 "command": "python -i \\\"${file}\\\""
-                },
+            },
             "linux": {
                 "command": "python -i \"${file}\""
             },
@@ -38,14 +27,14 @@
             },
             "windows": {
                 "command": "ocaml -init \\\"${file}\\\""
-                },
+            },
             "linux": {
                 "command": "ocaml -init \"${file}\""
             },
             "osx": {
                 "command": "ocaml -init \"${file}\""
-            }
->>>>>>> f5ad26abe35573e9990e8a86b82854540bd76714
+            },
+            "problemMatcher": []
         }
     ]
 }
