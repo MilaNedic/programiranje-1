@@ -53,6 +53,12 @@ module type NAT = sig
 
   val eq   : t -> t -> bool
   val zero : t
+  val add : t -> t -> t
+  val substract : t -> t -> t
+  val multiply : t -> t -> t
+
+  val to_int : t -> int
+  val of_int : int -> t
   (* Dodajte manjkajoče! *)
   (* val to_int : t -> int *)
   (* val of_int : int -> t *)
@@ -70,9 +76,14 @@ end
 module Nat_int : NAT = struct
 
   type t = int
-  let eq x y = failwith "later"
+  let eq x y = (=)
   let zero = 0
-  (* Dodajte manjkajoče! *)
+  let add x y = x + y
+  let one = 1
+  let mult x y = x * y
+  let sub x y = max 0 (x - y)
+  let to_int x = x
+  let of_int x = x
 
 end
 
@@ -90,12 +101,44 @@ end
 
 module Nat_peano : NAT = struct
 
-  type t = unit (* To morate spremeniti! *)
-  let eq x y = failwith "later"
-  let zero = () (* To morate spremeniti! *)
-  (* Dodajte manjkajoče! *)
+  type t = Z | S of t (* Zero and successor of t, npr 3 = S(S(S Z))*)
+  let eq x y = 
+    match x, y with
+    | Z, Z -> true
+    | S x, S y -> eq e, y
+    | _, _ -> false
+
+  let zero = Zero
+  let one S Zero
+
+  let rec add = function
+  | Z -> x
+  | S y -> S (add x y)
+
+  let rec mult x = function
+  | Z -> Z
+  | S y -> add x (mult x y)
+
+  let rec sub x y =
+    match (x, y) with
+    | (_, Z) -> x
+    | (Z, _) -> Z
+    | (S x, S y) -> sub x y
+
+  let rec from_int i =
+    if i <= 0
+    then Z
+    else S (from_int (i-1))
+  
+  let rec to_int = function
+    | Z -> 0
+    | S n -> 1 + (to_int n)
 
 end
+;;
+
+let three = Nat_peano.of_int 3
+let seven = Nat_peano.of_int 7
 
 (*----------------------------------------------------------------------------*]
  V OCamlu lahko module podajamo kot argumente funkcij, z uporabo besede
@@ -118,7 +161,16 @@ end
  - : int = 4950
 [*----------------------------------------------------------------------------*)
 
-let sum_nat_100 (module Nat : NAT) = ()
+let sum_nat_100 (module Nat : NAT) =
+  let hundred = Nat.of_int 100 in
+  let rec sum_x_100 x =
+    if Nat.eq x hundred then 
+      hundred
+    else
+     (* x + sum_x_100 (x+1) *)
+     Nat.add x (sum_x_100 (Nat.add x Nat.one))
+  in
+  sum_x_100 Nat.zero |> Nat.to_int
 
 (*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*]
  Now we follow the fable told by John Reynolds in the introduction.
@@ -132,8 +184,19 @@ let sum_nat_100 (module Nat : NAT) = ()
 
 module type COMPLEX = sig
   type t
+  val zero : t
+  val one : t
+  val i : t
+
   val eq : t -> t -> bool
-  (* Dodajte manjkajoče! *)
+
+  val neg : t -> t
+  val conj : t -> t
+
+  val add : t -> t -> t
+  val sub : t -> t -> t 
+  val mult : t -> t -> t
+
 end
 
 (*----------------------------------------------------------------------------*]
@@ -145,8 +208,22 @@ module Cartesian : COMPLEX = struct
 
   type t = {re : float; im : float}
 
-  let eq x y = failwith "later"
-  (* Dodajte manjkajoče! *)
+  val zero = {re = 0.; im = 0.}
+  val one = {re = 1., ; im = 0.}
+  val i = {re = 0.; im = 1.}
+
+  val eq z w = z.re = w.re && z.im = w.im
+
+  val neg z = {re = -. z.re; im = -. z.im}
+  val conj z = {re = z.re; im = -. z.im}
+
+  val add z w = {re = z.re +. w.re; im = z.im +. w.im}
+  val sub z w = {re = z.re -. w.re; im = z.im -. w.im}
+
+  val mult z w = 
+    let re = z.re *. w.re -. im = z.im *. w.im in
+    let im = x.im *. w.re +. x.re *. w.im in
+    {re; im}
 
 end
 
@@ -167,8 +244,9 @@ module Polar : COMPLEX = struct
   let rad_of_deg deg = (deg /. 180.) *. pi
   let deg_of_rad rad = (rad /. pi) *. 180.
 
-  let eq x y = failwith "later"
-  (* Dodajte manjkajoče! *)
+  let eq x y = 
+  (x.magn = 0. && y.magn = 0)
+  || (x.magn = y.magn && x.arg = y.arg)
 
 end
 
@@ -197,5 +275,5 @@ end
  n : 2
  - : unit = ()
 [*----------------------------------------------------------------------------*)
-
+;;
 let count (module Dict : DICT) list = ()
