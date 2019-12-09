@@ -186,7 +186,7 @@ let index_min a lower upper =
 let selection_sort_array a = 
   let len = Array.len a in
   let rec sorter lower =
-    if lower <= len then 
+    if lower >= len then 
     (*Everything is sorted*)
     () 
     else
