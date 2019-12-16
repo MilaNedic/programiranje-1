@@ -184,7 +184,7 @@ let index_min a lower upper =
  skupaj z [randlist].
 [*----------------------------------------------------------------------------*)
 let selection_sort_array a = 
-  let len = Array.len a in
+  let len = Array.length a in
   let rec sorter lower =
     if lower >= len then 
     (*Everything is sorted*)
@@ -198,5 +198,5 @@ let selection_sort_array a =
 let rec array_tester our_sort len =
   let test = randlist len 10000 |> Array.of_list in
   let test_array = Array.of_list test in
-  let () = our_sort test_array
+  let () = our_sort test_array in
   Array.to_list = List.sort compare test
