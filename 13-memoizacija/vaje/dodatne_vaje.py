@@ -10,7 +10,26 @@ from functools import lru_cache
 
 
 def najdaljse_narascajoce_podzaporedje(sez):
-    return None
+
+    @lru_cache(maxsize=256)
+    def najdaljse(i, meja):
+        # iscemo najdaljse podzaporedje od indeska i naprej
+        if i >= len(sez):
+            return []
+        elif sez[i] < meja:
+            # ali sprejmemo i-ti element
+            # preskocimo
+            return najdaljse(i + 1, meja)
+        else:
+            sprejmemo = [sez[i]] + najdaljse(i + 1, sez[i])
+            zavrnemo = najdaljse(i + 1, meja)
+            if len(sprejmemo) > len(zavrnemo):
+                return sprejmemo
+            else:
+                return zavrnemo
+
+    return najdaljse(0, min(sez))
+            
 
 ###############################################################################
 # Nepreviden študent je pustil robotka z umetno inteligenco nenadzorovanega.
@@ -47,4 +66,14 @@ soba = [[0, 1, 0, 0, 2],
 
 
 def pobeg(soba, pozicija, koraki):
-    return None
+    max_i = len(soba)
+    max_j = len(soba[0])
+
+    @lru_cache(maxsize=256)
+    def pobegni(vrsta, stolpec, koraki):
+        # pogledamo, ce pademo vn iz sobe
+        if (vrsta < 0 or vrsta > max_i) or (stolpec < 0 or stolpec > max_j):
+            return False
+        else:
+            return None
+
